@@ -107,15 +107,57 @@
 
         </RelativeLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <RelativeLayout
+            android:id="@+id/loadingContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingTop="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_10sdp"
             android:background="@drawable/btn_white_half_top"
-            android:layout_marginTop="@dimen/_minus10sdp">
+            android:layout_marginTop="@dimen/_minus10sdp"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="@dimen/_200sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_minus25sdp"
+                    android:layout_gravity="center"
+                    android:text="@string/loading_text"
+                    android:gravity="center"
+                    android:textColor="@color/textColorPrimary"
+                    android:fontFamily="@font/sfprotextbold"
+                    android:textSize="@dimen/_16sdp" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lottieAnimationHome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_60sdp"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/loading_file" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/homeDataContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/btn_white_half_top"
+            android:layout_marginTop="@dimen/_minus10sdp"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <LinearLayout

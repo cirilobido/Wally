@@ -5,13 +5,11 @@ import com.cirilobido.wally.data.model.ColorProvider
 import com.cirilobido.wally.data.model.PhotoModel
 import com.cirilobido.wally.data.model.TopicModel
 import com.cirilobido.wally.data.network.UnsplashService
+import javax.inject.Inject
 
-class DataRepository {
+class DataRepository @Inject constructor(private val apiService: UnsplashService, private val colorProvider: ColorProvider) {
+    suspend fun getPopularPhotos(): List<PhotoModel> = apiService.getPopularPhotos()
+    suspend fun getTopics(): List<TopicModel> = apiService.getTopics()
 
-    private val api = UnsplashService()
-
-    suspend fun getPopularPhotos(): List<PhotoModel> = api.getPopularPhotos()
-    suspend fun getTopics(): List<TopicModel> = api.getTopics()
-
-    fun getColors(): List<ColorModel> = ColorProvider.getColors()
+    fun getColors(): List<ColorModel> = colorProvider.colors
 }

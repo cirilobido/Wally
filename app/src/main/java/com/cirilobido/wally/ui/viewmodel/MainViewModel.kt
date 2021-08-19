@@ -9,25 +9,28 @@ import com.cirilobido.wally.data.model.TopicModel
 import com.cirilobido.wally.domain.GetColorsUseCase
 import com.cirilobido.wally.domain.GetPopularPhotosUseCase
 import com.cirilobido.wally.domain.GetTopicsUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel: ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val getPopularPhotosUseCase: GetPopularPhotosUseCase,
+    private val getColorsUseCase: GetColorsUseCase,
+    private val getTopicsUseCase: GetTopicsUseCase): ViewModel() {
 
-    val colorModel = MutableLiveData<List<ColorModel>?>()
-    private var getColorUserCase = GetColorsUseCase()
-
+    var isLoading = MutableLiveData<Boolean>()
     var photoModelList = MutableLiveData<List<PhotoModel>?>()
-    private val getPopularPhotosUseCase = GetPopularPhotosUseCase()
-
+    val colorModel = MutableLiveData<List<ColorModel>?>()
     var topicsList = MutableLiveData<List<TopicModel>?>()
-    private val  getTopicsUseCase = GetTopicsUseCase()
 
-    fun getColors(){
+
+    fun getData(){
         viewModelScope.launch {
-            val result: List<ColorModel>? = getColorUserCase()
-            if (!result.isNullOrEmpty()){
-                colorModel.postValue(result)
-            }
+            isLoading.postValue(true)
+            getPhotos()
+            getColors()
+            getTopics()
         }
     }
 
@@ -36,6 +39,16 @@ class MainViewModel: ViewModel() {
             val result: List<PhotoModel>? = getPopularPhotosUseCase()
             if (!result.isNullOrEmpty()){
                 photoModelList.postValue(result)
+                isLoading.postValue(false)
+            }
+        }
+    }
+
+    fun getColors(){
+        viewModelScope.launch {
+            val result: List<ColorModel>? = getColorsUseCase()
+            if (!result.isNullOrEmpty()){
+                colorModel.postValue(result)
             }
         }
     }

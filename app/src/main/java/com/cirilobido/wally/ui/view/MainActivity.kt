@@ -1,9 +1,11 @@
 package com.cirilobido.wally.ui.view
 
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,21 +33,26 @@ class MainActivity : AppCompatActivity() {
 
         val context = this
         with(binding) {
-            mainViewModel.getPhotos()
+            mainViewModel.getData()
+//            mainViewModel.getPhotos()
             mainViewModel.photoModelList.observe(context, Observer {photos ->
                 popularPhotosAdapter = PhotosAdapter(photos!!)
                 rvPopular.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 rvPopular.adapter = popularPhotosAdapter
             })
+            mainViewModel.isLoading.observe(context, Observer {
+                    loadingContainer.isVisible = it
+                    homeDataContainer.isVisible = !it
+            })
 
-            mainViewModel.getColors()
+//            mainViewModel.getColors()
             mainViewModel.colorModel.observe(context, Observer {colors ->
                 colorsAdapter = ColorsAdapter(colors!!);
                 rvColor.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 rvColor.adapter = colorsAdapter
             })
 
-            mainViewModel.getTopics()
+//            mainViewModel.getTopics()
             mainViewModel.topicsList.observe(context, Observer {topics ->
                 topicsAdapter = TopicsAdapter(topics!!);
                 rvCategories.layoutManager = GridLayoutManager(context, 2)
