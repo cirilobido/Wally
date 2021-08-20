@@ -40,10 +40,6 @@ class MainActivity : AppCompatActivity() {
                 rvPopular.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 rvPopular.adapter = popularPhotosAdapter
             })
-            mainViewModel.isLoading.observe(context, Observer {
-                    loadingContainer.isVisible = it
-                    homeDataContainer.isVisible = !it
-            })
 
 //            mainViewModel.getColors()
             mainViewModel.colorModel.observe(context, Observer {colors ->
@@ -57,6 +53,11 @@ class MainActivity : AppCompatActivity() {
                 topicsAdapter = TopicsAdapter(topics!!);
                 rvCategories.layoutManager = GridLayoutManager(context, 2)
                 rvCategories.adapter = topicsAdapter
+            })
+
+            mainViewModel.isLoading.observe(context, Observer {
+                loadingContainer.isVisible = it
+                homeDataContainer.isVisible = !it
             })
         }
 
