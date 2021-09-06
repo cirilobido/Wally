@@ -1,6 +1,7 @@
-package com.cirilobido.wally.data.model
+package com.cirilobido.wally.data.local
 
 import android.graphics.Color
+import com.cirilobido.wally.data.model.ColorModel
 import javax.inject.Inject
 
 class ColorProvider @Inject constructor(){

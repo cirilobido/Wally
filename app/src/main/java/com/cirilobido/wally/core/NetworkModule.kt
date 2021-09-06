@@ -18,7 +18,13 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideHttpLoginInterceptop(): HttpLoggingInterceptor {
+    fun provideGsonConverterFactory(): GsonConverterFactory{
+        return GsonConverterFactory.create()
+    }
+
+    @Singleton
+    @Provides
+    fun provideHttpLoginInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
     }
     @Singleton
@@ -32,14 +38,14 @@ object NetworkModule {
     fun provideRetrofit():Retrofit{
         return Retrofit.Builder()
             .baseUrl(BuildConfig.UNSPLASH_BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(OkHttpClient())
+            .addConverterFactory(provideGsonConverterFactory())
+            .client(provideOkHttpClient())
             .build()
     }
 
     @Singleton
     @Provides
-    fun provideUnsplshApiClient(retrofit: Retrofit): UnsplashApiClient{
+    fun provideUnsplashApiClient(retrofit: Retrofit): UnsplashApiClient{
         return retrofit.create(UnsplashApiClient::class.java)
     }
 }
