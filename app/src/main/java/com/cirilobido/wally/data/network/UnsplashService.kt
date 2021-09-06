@@ -1,25 +1,21 @@
 package com.cirilobido.wally.data.network
 
 import android.util.Log
-import com.cirilobido.wally.BuildConfig
-import com.cirilobido.wally.core.RetrofitHelper
 import com.cirilobido.wally.data.model.PhotoModel
+import com.cirilobido.wally.data.model.SearchResultModel
 import com.cirilobido.wally.data.model.TopicModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.Response
 import java.lang.Exception
+import javax.inject.Inject
 
-class UnsplashService {
-
-    private val retrofit = RetrofitHelper.getRetrofit()
-    private val apiKey: String = BuildConfig.UNSPLASH_KEY;
+class UnsplashService @Inject constructor(private val apiClient: UnsplashApiClient) {
 
     suspend fun getPopularPhotos(): List<PhotoModel>{
         return withContext(Dispatchers.IO) {
             try {
-                val response = retrofit.create(UnsplashApiClient::class.java)
-                    .getPopularPhotos(apiKey)
+                val response = apiClient
+                    .getPopularPhotos()
                 response.body() ?: emptyList()
             } catch (e: Exception){
                 emptyList()
@@ -30,12 +26,23 @@ class UnsplashService {
     suspend fun getTopics(): List<TopicModel>{
         return withContext(Dispatchers.IO){
             try {
-                val response = retrofit.create(UnsplashApiClient::class.java)
-                        .getTopics(apiKey)
+                val response = apiClient
+                        .getTopics()
                 response.body() ?: emptyList()
             } catch (e: Exception){
                 emptyList()
             }
+        }
+    }
+
+    suspend fun getSearch(page: Int, queryParam: String, color: String?): SearchResultModel{
+        return withContext(Dispatchers.IO){
+            try{
+                val response = apiClient.getSearch(page, queryParam, color)
+                response
+            } catch (e: Exception){
+                emptyList<SearchResultModel>()
+            } as SearchResultModel
         }
     }
 }
